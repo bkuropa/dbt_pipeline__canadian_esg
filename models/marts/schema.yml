@@ -1,0 +1,55 @@
+version: 2
+
+models:
+  - name: mart_eccc_emissions_by_province_industry
+    description: "Aggregates Canadian large-facility greenhouse gas emissions by province, industry classification, and reporting year."
+    config:
+      materialized: table
+      tags: ["eccc", "esg", "mart", "emissions", "province", "industry"]
+
+    meta:
+      domain: "ESG analytics"
+      source_system: "Environment and Climate Change Canada"
+      business_grain: "one row per reporting year, province, and industry classification"
+      primary_use_case: "province and sector emissions benchmarking"
+
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - reporting_year
+            - province
+            - industry_classification
+
+    columns:
+      - name: reporting_year
+        description: "Calendar year for which emissions were reported."
+        tests:
+          - not_null
+          - accepted_values:
+              values: [2024, 2025]
+
+      - name: province
+        description: "Province or territory associated with the reporting facility group."
+        tests:
+          - not_null
+
+      - name: industry_classification
+        description: "Industry classification assigned to the reporting facility."
+        tests:
+          - not_null
+
+      - name: facility_count
+        description: "Number of facilities in the province and industry group."
+        tests:
+          - not_null
+
+      - name: total_emissions_kt_co2e
+        description: "Total reported emissions for the group in kilotonnes of CO2 equivalent."
+        tests:
+          - not_null
+
+      - name: avg_facility_emissions_kt_co2e
+        description: "Average facility emissions in the province and industry group."
+
+      - name: max_facility_emissions_kt_co2e
+        description: "Largest facility-level emissions value in the province and industry group."
