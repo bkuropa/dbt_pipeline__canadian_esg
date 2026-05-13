@@ -18,6 +18,18 @@ dbt docs lineage
 business-facing dashboard layer
 ```
 
+## Dashboard Preview
+
+The Streamlit dashboard provides the business-facing visibility layer for the project.  
+It consumes the final dbt mart:
+
+`mart_eccc_emissions_by_province_industry`
+
+and allows users to explore ECCC emissions data by reporting year, province, and industry classification.
+
+![Dashboard preview](assets/dashboard_preview.png)
+
+
 ## Key dbt Commands
 
 Run the ECCC-tagged models:
